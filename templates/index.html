@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Scriveners Club</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			background-color: #f4f4f4;
+		}
+		.container {
+			width: 90%; /* Use a percentage for width */
+			max-width: 70rem; /* Maximum width for larger screens */
+			height: 70%; /* Height of the container */
+			padding: 2rem; /* Padding in rem */
+			background-color: white;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			text-align: center;
+			border-radius: 1rem; /* Border radius in rem */
+			overflow-y: auto; /* Enable scrolling if content exceeds height */
+		}
+		h1, h2 {
+			margin: 0;
+			padding-bottom: 1rem; /* Bottom padding in rem */
+		}
+		.list {
+			margin: 2rem 0; /* Margin in rem */
+			border: 1px solid #ccc;
+			padding: 1rem; /* Padding in rem */
+			background-color: #f9f9f9;
+		}
+		.list p {
+			margin: 1rem 0; /* Margin in rem */
+			display: flex; /* Enable flexbox for horizontal alignment */
+			align-items: center; /* Center align items */
+		}
+		.name-points {
+			flex: 1; /* Take remaining space */
+			display: flex; /* Enable flexbox for name and points */
+			justify-content: space-between; /* Space between name and points */
+			align-items: center; /* Center align items vertically */
+		}
+		.action-btn {
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 0.5rem 1rem; /* Padding in rem */
+			cursor: pointer;
+			border-radius: 0.5rem; /* Border radius in rem */
+			font-size: 1rem; /* Font size in rem */
+			margin-left: 0.5rem; /* Margin to the left of buttons */
+		}
+		.action-btn:hover {
+			background-color: #0056b3;
+		}
+		/* Modal styles */
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+			padding-top: 60px;
+		}
+		.modal-content {
+			background-color: #fefefe;
+			margin: 5% auto; /* Centered */
+			padding: 2rem; /* Padding in rem */
+			border: 1px solid #888;
+			width: 90%; /* Use percentage for responsive width */
+			max-width: 40rem; /* Maximum width for modal */
+		}
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 2rem; /* Font size in rem */
+			font-weight: bold;
+		}
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		/* Responsive Styles */
+		@media (max-width: 600px) {
+			.container {
+				padding: 1.5rem; /* Reduced padding for smaller screens */
+			}
+			.action-btn {
+				padding: 0.8rem; /* Increase button size for easier tapping */
+			}
+		}
+	</style>
+	<script>
+		let adminAuthenticated = sessionStorage.getItem('adminAuthenticated') === 'true';
+
+		function handlePointsChange(name, pointsToAdd) {
+			if (!adminAuthenticated) {
+				const password = prompt("Enter password:");
+				if (password === "911flightcrew") {
+					adminAuthenticated = true; // Set authenticated status
+					sessionStorage.setItem('adminAuthenticated', 'true'); // Store in session storage
+					updatePoints(name, pointsToAdd, password); // Call function to update points
+				} else {
+					alert("Invalid password!"); // Show alert for invalid password
+				}
+			} else {
+				updatePoints(name, pointsToAdd, "911flightcrew"); // Directly update points if authenticated
+			}
+		}
+
+		function updatePoints(name, pointsToAdd, password = '') {
+			const form = document.createElement("form");
+			form.method = "POST";
+			form.action = "/add_points";
+
+			const nameInput = document.createElement("input");
+			nameInput.type = "hidden";
+			nameInput.name = "name";
+			nameInput.value = name;
+
+			const pointsInput = document.createElement("input");
+			pointsInput.type = "hidden";
+			pointsInput.name = "points";
+			pointsInput.value = pointsToAdd;
+
+			const passwordInput = document.createElement("input");
+			passwordInput.type = "hidden";
+			passwordInput.name = "password";
+			passwordInput.value = password; // Include the password
+
+			form.appendChild(nameInput);
+			form.appendChild(pointsInput);
+			form.appendChild(passwordInput);
+			document.body.appendChild(form);
+			form.submit(); // Submit the form
+		}
+
+		function openModal() {
+			document.getElementById("myModal").style.display = "block";
+		}
+
+		function closeModal() {
+			document.getElementById("myModal").style.display = "none";
+		}
+
+		function addName() {
+			const password = prompt("Enter password:");
+			if (password === "911flightcrew") {
+				const name = document.getElementById("newName").value;
+				if (name) {
+					const form = document.createElement("form");
+					form.method = "POST";
+					form.action = "/add_name"; // New route for adding names
+
+					const nameInput = document.createElement("input");
+					nameInput.type = "hidden";
+					nameInput.name = "name";
+					nameInput.value = name;
+
+					const passwordInput = document.createElement("input");
+					passwordInput.type = "hidden";
+					passwordInput.name = "password";
+					passwordInput.value = password; // Include the password
+
+					form.appendChild(nameInput);
+					form.appendChild(passwordInput);
+					document.body.appendChild(form);
+					form.submit(); // Submit the form
+				} else {
+					alert("Please enter a name.");
+				}
+			} else {
+				alert("Invalid password!"); // Show alert for invalid password
+			}
+		}
+	</script>
+</head>
+<body>
+
+<div class="container">
+	<h1>Scriveners Club</h1>
+	<h2>GGITS</h2>
+	
+	<div class="list">
+		{% for name, points in score_data %}
+			<p style="display: flex; justify-content: space-between; align-items: center;">
+				<div style="display: flex; gap: 5px;"> <!-- Use flexbox for button alignment -->
+					<span class="name-points">{{ name }}: {{ points }}</span>
+					<button class="action-btn" onclick="handlePointsChange('{{ name }}', 5)">+5</button>
+					<button class="action-btn" onclick="handlePointsChange('{{ name }}', 10)">+10</button>
+					<button class="action-btn" onclick="handlePointsChange('{{ name }}', 15)">+15</button>
+				</div>
+			</p>
+		{% endfor %}
+	</div>
+
+	<button class="action-btn" onclick="openModal()">Add Name</button> <!-- Button to open modal -->
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+	<div class="modal-content">
+		<span class="close" onclick="closeModal()">&times;</span>
+		<h2>Add New Name</h2>
+		<input type="text" id="newName" placeholder="Enter Name" />
+		<button class="action-btn" onclick="addName()">Add</button>
+	</div>
+</div>
+</body>
+</html>
