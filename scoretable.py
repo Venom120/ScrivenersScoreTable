@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import pymysql
-username = "Scriveners"
-passwd = "scriveners@123"
+username = "username"
+passwd = "password@123"
 app = Flask(__name__)
 
 # function to init connection
