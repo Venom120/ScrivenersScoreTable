@@ -1,26 +1,25 @@
 import pymysql
 root_username = "root"  # Change this if your root username is different
-root_passwd = "root123"  # Change this to your actual root password
+root_passwd = "root@123"  # Change this to your actual root password
 # New user details
 username = "username"
-passwd = "password@123"  # Password for the new user
+passwd = "username@123"  # Password for the new user
 
 # Connect to MySQL as root (or a user with privileges to create users)
 mydbl = pymysql.connect(host="localhost", user=root_username, password=root_passwd)
 cur = mydbl.cursor()
 # Create the new user if it doesn't exist
 try:
-    cur.execute(f"CREATE USER IF NOT EXISTS '{username}'@'localhost' IDENTIFIED BY '{passwd}'")
-    print(f"User '{username}' created or already exists.")
+    cur.execute("CREATE USER IF NOT EXISTS %s@'localhost' IDENTIFIED BY %s",(username, passwd))
+    print("User %s created or already exists.",(username))
     
     # Grant specific privileges to the new user
-    cur.execute(f"GRANT SELECT, INSERT, UPDATE, CREATE ON scriveners.* TO '{username}'@'localhost'")
-    cur.execute(f"FLUSH PRIVILEGES")
+    cur.execute(f"GRANT SELECT, INSERT, UPDATE, CREATE ON {username}.* TO %s@'localhost'",(username))
     
-    print(f"Granted SELECT, INSERT, CREATE, and UPDATE privileges to '{username}' on 'scoretable'.")
+    print("Granted SELECT, INSERT, CREATE, and UPDATE privileges to %s on 'scoretable'.",(username))
 
 except Exception as e:
-    print(f"Error creating user or granting privileges: {e}")
+    print("Error creating user or granting privileges: %s",(e))
 finally:
     cur.close()
     mydbl.close()
@@ -34,7 +33,7 @@ try:
     mydbl.commit()
     print("Database 'scriveners' created or already exists.")
 except Exception as e:
-    print(f"Error creating database: {e}")
+    print("Error creating database: %s",(e))
 finally:
     cur.close()
     mydbl.close()
@@ -48,7 +47,7 @@ try:
     mydbl.commit()
     print("Table 'scoretable' created or already exists.")
 except Exception as e:
-    print(f"Error creating table: {e}")
+    print("Error creating table: %s",(e))
 finally:
     cur.close()
     mydbl.close()
