@@ -2,10 +2,10 @@
 import sys
 
 # Activate the virtual environment
-activate_this = './venv/bin/activate_this.py'
+activate_this = '/scoretable/venv/bin/activate_this.py'
 exec(open(activate_this).read(), dict(__file__=activate_this))
 
 # Set the application path
-sys.path.insert(0, "/scoretable") # project path
+sys.path.insert(0, "/scoretable")
 
 from scoretable import app as application

@@ -1,9 +1,9 @@
 import pymysql
 root_username = "root"  # Change this if your root username is different
-root_passwd = "root@123"  # Change this to your actual root password
+root_passwd = "root_database_password"  # Change this to your actual root password
 # New user details
-username = "username"
-passwd = "username@123"  # Password for the new user
+username = "any_username_of_your_choice"
+passwd = "any_password_of_your_choice"  # Password for the new user
 
 # Connect to MySQL as root (or a user with privileges to create users)
 mydbl = pymysql.connect(host="localhost", user=root_username, password=root_passwd)
@@ -14,7 +14,7 @@ try:
     print("User %s created or already exists.",(username))
     
     # Grant specific privileges to the new user
-    cur.execute(f"GRANT SELECT, INSERT, UPDATE, CREATE ON {username}.* TO %s@'localhost'",(username))
+    cur.execute("GRANT SELECT, INSERT, UPDATE, CREATE ON scriveners.* TO %s@'localhost'",(username))
     
     print("Granted SELECT, INSERT, CREATE, and UPDATE privileges to %s on 'scoretable'.",(username))
 

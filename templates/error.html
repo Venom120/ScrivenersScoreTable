@@ -2,54 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error Occurred</title>
+    <title>Error</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f4f4f4;
-            text-align: center;
+            font-family: Arial, sans-serif;
         }
         .error-container {
+            text-align: center;
+            padding: 2rem;
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 90%; /* Use a percentage for width */
-            max-width: 400px; /* Maximum width for larger screens */
+            border: 1px solid #ccc;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1 {
-            color: #d9534f; /* Bootstrap danger color */
-        }
-        p {
-            margin: 20px 0;
-        }
-        .home-btn {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            width: 100%; /* Full width for button */
-        }
-        .home-btn:hover {
-            background-color: #0056b3;
-        }
+        h1 { color: red; }
     </style>
 </head>
 <body>
-
-<div class="error-container">
-    <h1>Error Occurred!</h1>
-    <p>Sorry, something went wrong. Please try again later.</p>
-    <button class="home-btn" onclick="window.location.href='/'">Go to Homepage</button>
-</div>
-
+    <div class="error-container">
+        <h1>Something Went Wrong</h1>
+        <p>Please try again later.</p>
+        <a href="{{ url_for('index') }}">Go Back Home</a>
+    </div>
 </body>
 </html>
