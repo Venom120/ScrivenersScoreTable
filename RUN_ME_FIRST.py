@@ -12,11 +12,9 @@ cur = mydbl.cursor()
 try:
     cur.execute("CREATE USER IF NOT EXISTS %s@'localhost' IDENTIFIED BY %s",(username, passwd))
     print("User %s created or already exists.",(username))
-    
     # Grant specific privileges to the new user
     cur.execute("GRANT SELECT, INSERT, UPDATE, CREATE ON scriveners.* TO %s@'localhost'",(username))
-    
-    print("Granted SELECT, INSERT, CREATE, and UPDATE privileges to %s on 'scoretable'.",(username))
+    print("Granted SELECT, INSERT, CREATE, and UPDATE privileges to %s on 'poem'.",(username))
 
 except Exception as e:
     print("Error creating user or granting privileges: %s",(e))
@@ -38,16 +36,19 @@ finally:
     cur.close()
     mydbl.close()
     
-# Connect to MySQL as the new user to create the table
+# Connect to MySQL as the new user to create the tables
 mydbl = pymysql.connect(host="localhost", user=username, password=passwd, database="scriveners")
 cur = mydbl.cursor()
 # Create the table
 try:
-    cur.execute("CREATE TABLE IF NOT EXISTS scoretable (name VARCHAR(50), points INT DEFAULT 0)")
+    cur.execute("CREATE TABLE IF NOT EXISTS poem (name VARCHAR(50), points INT DEFAULT 0)")
     mydbl.commit()
-    print("Table 'scoretable' created or already exists.")
+    print("Table 'poem' created or already exists.")
+    cur.execute("CREATE TABLE IF NOT EXISTS music (name VARCHAR(50), points INT DEFAULT 0)")
+    mydbl.commit()
+    print("Table 'music' created or already exists.")
 except Exception as e:
-    print("Error creating table: %s",(e))
+    print("Error creating tables: %s",(e))
 finally:
     cur.close()
     mydbl.close()

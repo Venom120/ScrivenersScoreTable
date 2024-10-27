@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scriveners Club</title>
     <style>
-        /* Your existing CSS styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -62,6 +61,42 @@
 		.action-btn:hover {
 			background-color: #0056b3;
 		}
+		/* Navbar styling */
+		.navbar {
+			background-color: #007bff; /* Blue background */
+			padding: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+		}
+
+		/* Button styling */
+		.navbar form {
+			display: inline;
+		}
+
+		.navbar .action-btn {
+			background-color: #0056b3; /* Darker blue for buttons */
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			margin: 0 5px;
+			font-size: 16px;
+			cursor: pointer;
+			transition: background-color 0.3s ease, transform 0.2s ease;
+			border-radius: 4px;
+		}
+
+		/* Hover effects */
+		.navbar .action-btn:hover {
+			background-color: #004494; /* Even darker blue on hover */
+			transform: scale(1.05); /* Slightly larger on hover */
+		}
+
+		.navbar .action-btn:focus {
+			outline: none; /* Removes outline on focus */
+		}
+
         /* Responsive Styles */
         @media (max-width: 600px) {
             .container {
@@ -92,7 +127,7 @@
 <div class="container">
     <h1>Scriveners Club</h1>
     <h2>GGITS</h2>
-    <img src="/scoretable/static/icon.png" alt="Icon" style="width: 100px; height: auto; margin-bottom: 20px;">
+    <img src="{{ url_for('static', filename='icon.png') }}" alt="Icon" style="width: 100px; height: auto; margin-bottom: 20px;">
 
     <!-- Display Flash Messages -->
     {% with messages = get_flashed_messages() %}
@@ -106,57 +141,112 @@
     {% endwith %}
 
     <!-- Authentication Section -->
-    {% if admin_authenticated %}
-        <!-- Logout Form -->
-        <form method="POST" action="{{ url_for('logout') }}">
-            <button type="submit" class="action-btn">Logout</button>
-        </form>
-    {% else %}
-        <!-- Login Form -->
-        <form method="POST" action="{{ url_for('login') }}">
-            <input type="password" name="password" placeholder="Enter password" required>
-            <button type="submit" class="action-btn">Login</button>
-        </form>
-    {% endif %}
-
-    <!-- Scores List -->
-    <div class="list">
-        {% for entry in score_data %}
-            <p style="display: inline;">
-                <span class="name-points">{{ entry.name }}: {{ entry.points }}</span>
-                {% if admin_authenticated %}
-                    <!-- Add +5 Points Form -->
-                    <form method="POST" action="{{ url_for('add_points_route') }}" style="display: inline;">
-                        <input type="hidden" name="name" value="{{ entry.name }}">
-                        <input type="hidden" name="points" value="5">
-                        <button type="submit" class="action-btn">+5</button>
-                    </form>
-                    <!-- Add +10 Points Form -->
-                    <form method="POST" action="{{ url_for('add_points_route') }}" style="display: inline;">
-                        <input type="hidden" name="name" value="{{ entry.name }}">
-                        <input type="hidden" name="points" value="10">
-                        <button type="submit" class="action-btn">+10</button>
-                    </form>
-                    <!-- Subtract -5 Points Form -->
-                    <form method="POST" action="{{ url_for('add_points_route') }}" style="display: inline;">
-                        <input type="hidden" name="name" value="{{ entry.name }}">
-                        <input type="hidden" name="points" value="-5">
-                        <button type="submit" class="action-btn">-5</button>
-                    </form>
-                {% endif %}
-            </p>
-        {% endfor %}
+    <div class="auth-section">
+        {% if admin_authenticated %}
+            <!-- Logout Form -->
+            <form method="POST" action="{{ url_for('logout') }}">
+                <input type="hidden" name="page_name" value="{{ page_name }}">
+                <button type="submit" class="action-btn">Logout</button>
+            </form>
+        {% else %}
+            <!-- Login Form -->
+            <form method="POST" action="{{ url_for('login') }}">
+                <input type="hidden" name="page_name" value="{{ page_name }}">
+                <input type="password" name="password" placeholder="Enter password" required>
+                <button type="submit" class="action-btn">Login</button>
+            </form>
+        {% endif %}
     </div>
 
-    <!-- Add Name Section -->
-    <h2>Add New Name</h2>
-    <form method="POST" action="{{ url_for('add_name_route') }}">
-        <input type="text" name="name" placeholder="Enter Name" required>
-        <input type="password" name="password" placeholder="Enter password" required>
-        <button type="submit" class="action-btn">Add</button>
-    </form>
+	<!-- navbar -->
+	<div class="navbar">
+        <form method="GET" action="{{ url_for('index', page_name='poem') }}" style="display: inline;">
+            <button type="submit" class="action-btn">Poem</button>
+        </form>
+        <form method="GET" action="{{ url_for('index', page_name='music') }}" style="display: inline;">
+            <button type="submit" class="action-btn">Music</button>
+        </form>
+    </div>
 
+	{% if page_name == 'poem' %}
+	<!-- poem -->
+	<div id="poem" class="activities">
+		<!-- Scores List -->
+		<div class="list">
+			{% for entry in score_data %}
+				<p style="display: inline;">
+					<span class="name-points">{{ entry.name }}: {{ entry.points }}</span>
+					{% if admin_authenticated %}
+						<!-- Add +5 Points Form -->
+						<form method="POST" action="{{ url_for('add_points_route_poem') }}" style="display: inline;">
+							<input type="hidden" name="name" value="{{ entry.name }}">
+							<input type="hidden" name="points" value="5">
+							<button type="submit" class="action-btn">+5</button>
+						</form>
+						<!-- Add +10 Points Form -->
+						<form method="POST" action="{{ url_for('add_points_route_poem') }}" style="display: inline;">
+							<input type="hidden" name="name" value="{{ entry.name }}">
+							<input type="hidden" name="points" value="10">
+							<button type="submit" class="action-btn">+10</button>
+						</form>
+						<!-- Subtract -5 Points Form -->
+						<form method="POST" action="{{ url_for('add_points_route_poem') }}" style="display: inline;">
+							<input type="hidden" name="name" value="{{ entry.name }}">
+							<input type="hidden" name="points" value="-5">
+							<button type="submit" class="action-btn">-5</button>
+						</form>
+					{% endif %}
+				</p>
+			{% endfor %}
+		</div>
+		<!-- Add Name Section -->
+		<h2>Add New Name</h2>
+		<form method="POST" action="{{ url_for('add_name_route_poem') }}">
+			<input type="text" name="name" placeholder="Enter Name" required>
+			<input type="password" name="password" placeholder="Enter password" required>
+			<button type="submit" class="action-btn">Add</button>
+		</form>
+	</div>
+	{% elif page_name=='music' %}
+	<!-- music -->
+	<div id="music" class="activities">
+		<!-- Scores List -->
+		<div class="list">
+			{% for entry in score_data %}
+				<p style="display: inline;">
+					<span class="name-points">{{ entry.name }}: {{ entry.points }}</span>
+					{% if admin_authenticated %}
+						<!-- Add +5 Points Form -->
+						<form method="POST" action="{{ url_for('add_points_route_music') }}" style="display: inline;">
+							<input type="hidden" name="name" value="{{ entry.name }}">
+							<input type="hidden" name="points" value="5">
+							<button type="submit" class="action-btn">+5</button>
+						</form>
+						<!-- Add +10 Points Form -->
+						<form method="POST" action="{{ url_for('add_points_route_music') }}" style="display: inline;">
+							<input type="hidden" name="name" value="{{ entry.name }}">
+							<input type="hidden" name="points" value="10">
+							<button type="submit" class="action-btn">+10</button>
+						</form>
+						<!-- Subtract -5 Points Form -->
+						<form method="POST" action="{{ url_for('add_points_route_music') }}" style="display: inline;">
+							<input type="hidden" name="name" value="{{ entry.name }}">
+							<input type="hidden" name="points" value="-5">
+							<button type="submit" class="action-btn">-5</button>
+						</form>
+					{% endif %}
+				</p>
+			{% endfor %}
+		</div>
+		<!-- Add Name Section -->
+		<h2>Add New Name</h2>
+		<form method="POST" action="{{ url_for('add_name_route_music') }}">
+			<input type="text" name="name" placeholder="Enter Name" required>
+			<input type="password" name="password" placeholder="Enter password" required>
+			<button type="submit" class="action-btn">Add</button>
+		</form>
+	</div>
+	{% endif %}
 </div>
-
 </body>
 </html>
