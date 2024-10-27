@@ -140,12 +140,7 @@ def add_points_route_poem():
 # Route to add a new name in poem
 @app.route('/add_name_poem', methods=['POST'])
 def add_name_route_poem():
-    password = request.form.get('password', '')
     name = request.form.get('name', '').strip()
-
-    if password != admin_pass:
-        flash('Invalid password! Please try again.')
-        return redirect(url_for('index', page_name="poem"))
 
     if not name:
         flash('Name cannot be empty.')
@@ -245,12 +240,7 @@ def add_points_route_music():
 # Route to add a new name in music
 @app.route('/add_name_music', methods=['POST'])
 def add_name_route_music():
-    password = request.form.get('password', '')
     name = request.form.get('name', '').strip()
-
-    if password != admin_pass:
-        flash('Invalid password! Please try again.')
-        return redirect(url_for('index', page_name="music"))
 
     if not name:
         flash('Name cannot be empty.')

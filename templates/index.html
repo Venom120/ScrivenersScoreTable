@@ -199,6 +199,7 @@
 				</p>
 			{% endfor %}
 		</div>
+		{% if admin_authenticated %}
 		<!-- Add Name Section -->
 		<h2>Add New Name</h2>
 		<form method="POST" action="{{ url_for('add_name_route_poem') }}">
@@ -206,6 +207,7 @@
 			<input type="password" name="password" placeholder="Enter password" required>
 			<button type="submit" class="action-btn">Add</button>
 		</form>
+		{% endif %}
 	</div>
 	{% elif page_name=='music' %}
 	<!-- music -->
@@ -238,6 +240,7 @@
 				</p>
 			{% endfor %}
 		</div>
+		{% if admin_authenticated %}
 		<!-- Add Name Section -->
 		<h2>Add New Name</h2>
 		<form method="POST" action="{{ url_for('add_name_route_music') }}">
@@ -245,6 +248,7 @@
 			<input type="password" name="password" placeholder="Enter password" required>
 			<button type="submit" class="action-btn">Add</button>
 		</form>
+		{% endif %}
 	</div>
 	{% endif %}
 </div>
