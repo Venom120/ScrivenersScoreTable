@@ -1,19 +1,21 @@
 import pymysql
-root_username = "root"  # Change this if your root username is different
-root_passwd = "root_database_password"  # Change this to your actual root password
+host = "" # Change this to your host
+root_username = ""  # Change this if your root username is different
+root_passwd = ""  # Change this to your actual root password
+
 # New user details
-username = "any_username_of_your_choice"
-passwd = "any_password_of_your_choice"  # Password for the new user
+username = "" # Username for the new user
+passwd = ""  # Password for the new user
 
 # Connect to MySQL as root (or a user with privileges to create users)
-mydbl = pymysql.connect(host="localhost", user=root_username, password=root_passwd)
+mydbl = pymysql.connect(host=host, user=root_username, password=root_passwd)
 cur = mydbl.cursor()
 # Create the new user if it doesn't exist
 try:
-    cur.execute("CREATE USER IF NOT EXISTS %s@'localhost' IDENTIFIED BY %s",(username, passwd))
+    cur.execute("CREATE USER IF NOT EXISTS %s@'%' IDENTIFIED BY %s",(username, passwd))
     print("User %s created or already exists.",(username))
     # Grant specific privileges to the new user
-    cur.execute("GRANT SELECT, INSERT, UPDATE, CREATE ON scriveners.* TO %s@'localhost'",(username))
+    cur.execute("GRANT SELECT, INSERT, UPDATE, CREATE ON scriveners.* TO %s@'%'",(username))
     print("Granted SELECT, INSERT, CREATE, and UPDATE privileges to %s on 'poem'.",(username))
 
 except Exception as e:
@@ -23,7 +25,7 @@ finally:
     mydbl.close()
 
 # Connect to MySQL as the new user to create the database
-mydbl = pymysql.connect(host="localhost", user=username, password=passwd)
+mydbl = pymysql.connect(host=host, user=username, password=passwd)
 cur = mydbl.cursor()
 # Create the database
 try:
@@ -37,7 +39,7 @@ finally:
     mydbl.close()
     
 # Connect to MySQL as the new user to create the tables
-mydbl = pymysql.connect(host="localhost", user=username, password=passwd, database="scriveners")
+mydbl = pymysql.connect(host=host, user=username, password=passwd, database="scriveners")
 cur = mydbl.cursor()
 # Create the table
 try:

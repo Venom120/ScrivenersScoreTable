@@ -5,15 +5,16 @@ app.secret_key = "your_secret_key" # can be any but unique
 # Database credentials
 DB_USERNAME = "" # use the same as you used in RUN_ME_FIRST.py
 DB_PASSWORD = "" # use the same as you used in RUN_ME_FIRST.py
-DB_HOST = "localhost"
-DB_NAME = "scriveners"
-admin_pass = "admin_passwd" # admin password for login
+DB_HOST = "localhost" # use the same as you used in RUN_ME_FIRST.py
+DB_NAME = "scriveners" # use the same as you used in RUN_ME_FIRST.py
+admin_pass = "admin_passwd" # admin password for login inside the website
 
-# If deploying on a deployment service
+# ------------# If deploying on a deployment service------------
 DB_USERNAME = os.environ['DB_USERNAME']
 DB_PASSWORD = os.environ['DB_PASSWORD']
 DB_HOST = os.environ['DB_HOST']
-admin_pass = "root123"
+admin_pass = os.environ['ADMIN_PASS']
+
 
 # ignore this func its just for debug
 def log(txt):
