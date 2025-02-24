@@ -2,6 +2,7 @@ import pymysql
 host = "" # Change this to your host
 root_username = ""  # Change this if your root username is different
 root_passwd = ""  # Change this to your actual root password
+db_name = "" # the database name you want to create
 
 # New user details
 username = "" # Username for the new user
@@ -15,11 +16,11 @@ try:
     cur.execute("CREATE USER IF NOT EXISTS %s@'%' IDENTIFIED BY %s",(username, passwd))
     print("User %s created or already exists.",(username))
     # Grant specific privileges to the new user
-    cur.execute("GRANT SELECT, INSERT, UPDATE, CREATE ON scriveners.* TO %s@'%'",(username))
+    cur.execute("GRANT SELECT, INSERT, UPDATE, CREATE ON %s.* TO %s@'%'",(db_name, username))
     print("Granted SELECT, INSERT, CREATE, and UPDATE privileges to %s on 'poem'.",(username))
 
 except Exception as e:
-    print("Error creating user or granting privileges: %s",(e))
+    print("Error creating user or granting privileges: %s",str(e))
 finally:
     cur.close()
     mydbl.close()
@@ -29,17 +30,17 @@ mydbl = pymysql.connect(host=host, user=username, password=passwd)
 cur = mydbl.cursor()
 # Create the database
 try:
-    cur.execute("CREATE DATABASE IF NOT EXISTS scriveners")
+    cur.execute("CREATE DATABASE IF NOT EXISTS %s", (db_name))
     mydbl.commit()
-    print("Database 'scriveners' created or already exists.")
+    print("Database '%s' created or already exists.", (db_name))
 except Exception as e:
-    print("Error creating database: %s",(e))
+    print("Error creating database: %s",str(e))
 finally:
     cur.close()
     mydbl.close()
     
 # Connect to MySQL as the new user to create the tables
-mydbl = pymysql.connect(host=host, user=username, password=passwd, database="scriveners")
+mydbl = pymysql.connect(host=host, user=username, password=passwd, database=db_name)
 cur = mydbl.cursor()
 # Create the table
 try:
@@ -50,7 +51,7 @@ try:
     mydbl.commit()
     print("Table 'music' created or already exists.")
 except Exception as e:
-    print("Error creating tables: %s",(e))
+    print("Error creating tables: %s",str(e))
 finally:
     cur.close()
     mydbl.close()
