@@ -1,4 +1,4 @@
-import pymysql
+import pymysql, os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 app = Flask(__name__)
 app.secret_key = "your_secret_key" # can be any but unique
@@ -8,6 +8,12 @@ DB_PASSWORD = "" # use the same as you used in RUN_ME_FIRST.py
 DB_HOST = "localhost"
 DB_NAME = "scriveners"
 admin_pass = "admin_passwd" # admin password for login
+
+# If deploying on a deployment service
+DB_USERNAME = os.environ['DB_USERNAME']
+DB_PASSWORD = os.environ['DB_PASSWORD']
+DB_HOST = os.environ['DB_HOST']
+admin_pass = "root123"
 
 # ignore this func its just for debug
 def log(txt):
