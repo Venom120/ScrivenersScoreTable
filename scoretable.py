@@ -4,14 +4,14 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key" # can be any but unique
 # Database credentials
 DB_USERNAME = "" # use the same as you used in RUN_ME_FIRST.py
-DB_PASSWORD = "" # use the same as you used in RUN_ME_FIRST.py
+USER_PASSWORD = "" # use the same as you used in RUN_ME_FIRST.py
 DB_HOST = "localhost" # use the same as you used in RUN_ME_FIRST.py
 DB_NAME = "scriveners" # use the same as you used in RUN_ME_FIRST.py
 admin_pass = "admin_passwd" # admin password for login inside the website
 
 # ------------# If deploying on a deployment service------------
 DB_USERNAME = os.environ['DB_USERNAME']
-DB_PASSWORD = os.environ['DB_PASSWORD']
+USER_PASSWORD = os.environ['USER_PASSWORD']
 DB_HOST = os.environ['DB_HOST']
 admin_pass = os.environ['ADMIN_PASS']
 
@@ -25,7 +25,7 @@ def get_db_connection():
     return pymysql.connect(
         host=DB_HOST,
         user=DB_USERNAME,
-        password=DB_PASSWORD,
+        password=USER_PASSWORD,
         database=DB_NAME,
         cursorclass=pymysql.cursors.DictCursor
     )
