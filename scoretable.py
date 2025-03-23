@@ -32,6 +32,10 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 # Home route
+@app.route('/')
+def home():
+    return redirect(url_for('index', page_name='poem'))
+
 @app.route('/<page_name>')
 def index(page_name):
     if page_name == "poem":
